@@ -2,8 +2,46 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.Bangkit2024FPBPAAI" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="colorPrimary">@color/color_primary</item>
+        <item name="colorSecondary">@color/color_secondary</item>
     </style>
 
     <style name="Theme.Bangkit2024FPBPAAI" parent="Base.Theme.Bangkit2024FPBPAAI" />
+
+    <style name="BackgroundPrimaryColor">
+        <item name="android:background">@color/color_primary</item>
+        <item name="android:backgroundTint">@color/color_primary</item>
+        <item name="tint">@color/white</item>
+    </style>
+
+    <style name="BackgroundSecondaryColor">
+        <item name="android:background">@color/color_secondary</item>
+        <item name="android:backgroundTint">@color/color_secondary</item>
+        <item name="tint">@color/black</item>
+    </style>
+
+    <style name="TextAppearance.AppCompat.DisplayLarge" parent="TextAppearance.Material3.DisplayLarge">
+        <item name="fontFamily">@font/montserrat_regular</item>
+        <item name="android:textSize">57sp</item>
+    </style>
+
+    <style name="TextAppearance.AppCompat.DisplaySmall" parent="TextAppearance.Material3.DisplaySmall">
+        <item name="fontFamily">@font/montserrat_regular</item>
+        <item name="android:textSize">36sp</item>
+    </style>
+
+    <style name="TextAppearance.AppCompat.TitleLarge" parent="TextAppearance.Material3.TitleLarge">
+        <item name="fontFamily">@font/montserrat_regular</item>
+        <item name="android:textSize">22sp</item>
+    </style>
+
+    <style name="TextAppearance.AppCompat.BodyLarge" parent="TextAppearance.Material3.BodyLarge">
+        <item name="fontFamily">@font/montserrat_regular</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="TextAppearance.AppCompat.BodyMedium" parent="TextAppearance.Material3.BodyMedium">
+        <item name="fontFamily">@font/montserrat_regular</item>
+        <item name="android:textSize">14sp</item>
+    </style>
 </resources>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">StoryApp</string>
+
+    <!-- Autentikasi -->
+    <string name="login">Masuk</string>
+    <string name="enter_email_password">Masukkan email and password kamu</string>
+    <string name="invalid_email">Gunakan email format</string>
+    <string name="password">Password</string>
+    <string name="invalid_password">Password tidak boleh lebih dari 8 karakter</string>
+    <string name="dont_have_acc">Belum punya akun?</string>
+    <string name="sign_up">Daftar</string>
+    <string name="name">Nama Lengkap</string>
+    <string name="have_acc">Sudah mempunyai akun?</string>
+    <string name="empty_form">Isi data form terlebih dahulu</string>
+    <string name="try_login">Daftar akun berhasil! Silakan coba masuk ke akun Anda</string>
+    <string name="already_taken">DAFTAR ERROR : Email sudah terdaftar</string>
+    <string name="invalid_form">Silakan isi data formulir sesuai ketentuan</string>
+
+    <!-- Home -->
+    <string name="translate">Terjemahan</string>
+    <string name="logout">Keluar</string>
+    <string name="image_story">Gambar</string>
+    <string name="name_story">Nama</string>
+    <string name="desc_story">Deskripsi</string>
+    <string name="created_at_story">11 Februari 2024</string>
+    <string name="btn_add_story">Tombol Tambah Cerita</string>
+
+    <!-- Detail -->
+    <string name="back">Kembali</string>
+
+    <!-- Add Story -->
+    <string name="camera">Kamera</string>
+    <string name="gallery">Galeri</string>
+    <string name="upload">Unggah</string>
+    <string name="empty_form_upload">Isi datanya terlebih dahulu</string>
+    <string name="add_story_success">Cerita berhasil ditambahkan</string>
+</resources>

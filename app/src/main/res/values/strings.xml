@@ -1,3 +1,39 @@
 <resources>
-    <string name="app_name">Bangkit-2024-FP-BPAAI</string>
+    <string name="app_name">StoryApp</string>
+    <string name="logo_app">Logo App</string>
+
+    <!-- Authentication -->
+    <string name="login">Login</string>
+    <string name="enter_email_password">Enter your email and password</string>
+    <string name="email" translatable="false">Email</string>
+    <string name="invalid_email">Use email format</string>
+    <string name="password">Password</string>
+    <string name="invalid_password">Password must not be less than 8 characters</string>
+    <string name="dont_have_acc">Don\'t have an account yet?</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="name">Full Name</string>
+    <string name="have_acc">Already have an account?</string>
+    <string name="empty_form">Please fill in the form fields</string>
+    <string name="try_login">Register Success! Please try to login to your account</string>
+    <string name="already_taken">SIGN UP ERROR : Email is already taken</string>
+    <string name="invalid_form">Please fill in the form data according to the requirements</string>
+
+    <!-- Home -->
+    <string name="translate">Translate</string>
+    <string name="logout">Logout</string>
+    <string name="image_story">Image</string>
+    <string name="name_story">Name</string>
+    <string name="desc_story">Description</string>
+    <string name="created_at_story">11 February 2024</string>
+    <string name="btn_add_story">Add Story Button</string>
+
+    <!-- Detail -->
+    <string name="back">Back</string>
+
+    <!-- Add Story -->
+    <string name="camera">Camera</string>
+    <string name="gallery">Galery</string>
+    <string name="upload">Upload</string>
+    <string name="empty_form_upload">Fill in the data first</string>
+    <string name="add_story_success">Story successfully added</string>
 </resources>
