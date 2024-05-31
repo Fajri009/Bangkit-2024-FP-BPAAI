@@ -8,6 +8,11 @@
             android:title="@string/translate"
             app:showAsAction="ifRoom" />
         <item
+            android:id="@+id/maps"
+            android:icon="@drawable/ic_maps"
+            android:title="@string/maps"
+            app:showAsAction="ifRoom" />
+        <item
             android:id="@+id/logout"
             android:icon="@drawable/ic_logout"
             android:title="@string/logout"

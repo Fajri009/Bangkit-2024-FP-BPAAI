@@ -8,6 +8,7 @@ import com.example.bangkit_2024_fp_bpaai.ui.add.AddStoryViewModel
 import com.example.bangkit_2024_fp_bpaai.ui.auth.login.LoginViewModel
 import com.example.bangkit_2024_fp_bpaai.ui.auth.register.RegisterViewModel
 import com.example.bangkit_2024_fp_bpaai.ui.home.HomeViewModel
+import com.example.bangkit_2024_fp_bpaai.ui.maps.MapsViewModel
 
 class ViewModelFactory private constructor(private val storyRepository: StoryRepository) :
     ViewModelProvider.NewInstanceFactory() {
@@ -25,6 +26,9 @@ class ViewModelFactory private constructor(private val storyRepository: StoryRep
             }
             modelClass.isAssignableFrom(AddStoryViewModel::class.java) -> {
                 return AddStoryViewModel(storyRepository) as T
+            }
+            modelClass.isAssignableFrom(MapsViewModel::class.java) -> {
+                return MapsViewModel(storyRepository) as T
             }
             else -> throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
         }

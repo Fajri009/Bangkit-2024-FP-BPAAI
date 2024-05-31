@@ -20,6 +20,7 @@
 
     <!-- Home -->
     <string name="translate">Translate</string>
+    <string name="maps">Maps</string>
     <string name="logout">Logout</string>
     <string name="image_story">Image</string>
     <string name="name_story">Name</string>

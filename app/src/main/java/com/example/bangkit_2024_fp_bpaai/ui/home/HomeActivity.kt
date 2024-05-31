@@ -19,6 +19,7 @@ import com.example.bangkit_2024_fp_bpaai.ui.ViewModelFactory
 import com.example.bangkit_2024_fp_bpaai.ui.add.AddStoryActivity
 import com.example.bangkit_2024_fp_bpaai.ui.auth.login.LoginActivity
 import com.example.bangkit_2024_fp_bpaai.ui.detail.DetailStoryActivity
+import com.example.bangkit_2024_fp_bpaai.ui.maps.MapsActivity
 
 class HomeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityHomeBinding
@@ -110,6 +111,11 @@ class HomeActivity : AppCompatActivity() {
                 }
                 R.id.logout -> {
                     logout()
+                    true
+                }
+                R.id.maps -> {
+                    val intent = Intent(this@HomeActivity, MapsActivity::class.java)
+                    startActivity(intent)
                     true
                 }
                 else -> false

@@ -21,6 +21,5 @@ class UserPreferences(context: Context) {
     companion object {
         private const val PREFS_NAME = "user_pref"
         private const val TOKEN = "token"
-        private const val IS_LOGIN = "is_login"
     }
 }

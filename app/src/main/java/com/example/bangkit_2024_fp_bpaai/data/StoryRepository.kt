@@ -67,6 +67,19 @@ class StoryRepository(
             }
         }
 
+    fun getStoriesWithLocation(token: String, location: Int): LiveData<Result<Story>> =
+        liveData {
+            emit(Result.Loading)
+
+            try {
+                val response = apiService.getStoriesWithLocation(token, location)
+                emit(Result.Success(response))
+            } catch (e: Exception) {
+                Log.d("Get Stories with Location", e.message.toString())
+                emit(Result.Error(e.message.toString()))
+            }
+        }
+
     fun addStories(
         token: String,
         uri: MultipartBody.Part,
