@@ -1,17 +1,18 @@
 package com.example.bangkit_2024_fp_bpaai.ui.add
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.location.Location
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import androidx.core.app.ActivityCompat
 import com.example.bangkit_2024_fp_bpaai.R
 import com.example.bangkit_2024_fp_bpaai.data.local.preference.User
 import com.example.bangkit_2024_fp_bpaai.data.local.preference.UserPreferences
@@ -20,6 +21,8 @@ import com.example.bangkit_2024_fp_bpaai.databinding.ActivityAddStoryBinding
 import com.example.bangkit_2024_fp_bpaai.ui.ViewModelFactory
 import com.example.bangkit_2024_fp_bpaai.utils.getImageUri
 import com.example.bangkit_2024_fp_bpaai.utils.uriToFile
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
@@ -28,6 +31,10 @@ import okhttp3.RequestBody.Companion.toRequestBody
 class AddStoryActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAddStoryBinding
     private var currentImageUri: Uri? = null
+
+    private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
+    private var lat: Double? = null
+    private var lon: Double? = null
 
     private val factory: ViewModelFactory = ViewModelFactory.getInstance()
     private val viewModel: AddStoryViewModel by viewModels {
@@ -45,12 +52,22 @@ class AddStoryActivity : AppCompatActivity() {
         userPreferences = UserPreferences(this)
         userModel = userPreferences.getUser()
 
-        back()
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
 
-        binding.btnCamera.setOnClickListener { startCamera() }
-        binding.btnGallery.setOnClickListener { startGallery() }
-
-        upload()
+        binding.apply {
+            ivBack.setOnClickListener { finish() }
+            btnCamera.setOnClickListener { startCamera() }
+            btnGallery.setOnClickListener { startGallery() }
+            cbShareLoc.setOnCheckedChangeListener { _, isChecked ->
+                if (isChecked) {
+                    getCurrentLocation()
+                } else {
+                    lat = null
+                    lon = null
+                }
+            }
+            btnUpload.setOnClickListener { upload() }
+        }
     }
 
     private fun startCamera() {
@@ -87,31 +104,66 @@ class AddStoryActivity : AppCompatActivity() {
         }
     }
 
+    private fun getCurrentLocation() {
+        if (binding.cbShareLoc.isChecked) {
+            if (ActivityCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                ) != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(
+                        Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.ACCESS_COARSE_LOCATION
+                    ),
+                    LOCATION_PERMISSION_REQUEST_CODE
+                )
+                return
+            }
+            fusedLocationProviderClient.lastLocation
+                .addOnSuccessListener { location: Location? ->
+                    location?.let {
+                        lat = it.latitude
+                        lon = it.longitude
+                    }
+                }
+                .addOnFailureListener {
+                    Log.e("LocationError", "Failed to get location.")
+                }
+        }
+    }
+
     private fun upload() {
         val edDesc = binding.edDesc.text
 
-        binding.btnUpload.setOnClickListener {
-            if (currentImageUri == null || edDesc!!.isEmpty()) {
-                showToast(R.string.empty_form_upload)
-            } else {
-                currentImageUri?.let { uri ->
-                    val imageFile = uriToFile(uri, this)
-                    val desc = binding.edDesc.text.toString()
+        if (currentImageUri == null || edDesc!!.isEmpty()) {
+            showToast(R.string.empty_form_upload)
+        } else {
+            currentImageUri?.let { uri ->
+                val imageFile = uriToFile(uri, this)
+                val desc = binding.edDesc.text.toString()
 
-                    val requestImageFile = imageFile.asRequestBody("image/jpeg".toMediaType())
-                    val requestBody = desc.toRequestBody("text/plain".toMediaType())
-                    val multipartBody = MultipartBody.Part.createFormData(
-                        "photo",
-                        imageFile.name,
-                        requestImageFile
-                    )
+                val requestImageFile = imageFile.asRequestBody("image/jpeg".toMediaType())
+                val requestBody = desc.toRequestBody("text/plain".toMediaType())
+                val multipartBody = MultipartBody.Part.createFormData(
+                    "photo",
+                    imageFile.name,
+                    requestImageFile
+                )
 
-                    viewModel.addStory(userModel.token!!, multipartBody, requestBody).observe(this) { result ->
+                viewModel.addStory(userModel.token!!, multipartBody, requestBody, lat, lon)
+                    .observe(this) { result ->
                         if (result != null) {
                             when (result) {
                                 is Result.Loading -> {
                                     binding.progressBar.visibility = View.VISIBLE
                                 }
+
                                 is Result.Success -> {
                                     binding.progressBar.visibility = View.GONE
 
@@ -121,6 +173,7 @@ class AddStoryActivity : AppCompatActivity() {
                                         finish()
                                     }
                                 }
+
                                 is Result.Error -> {
                                     binding.progressBar.visibility = View.GONE
 
@@ -129,14 +182,7 @@ class AddStoryActivity : AppCompatActivity() {
                             }
                         }
                     }
-                }
             }
-        }
-    }
-
-    private fun back() {
-        binding.ivBack.setOnClickListener {
-            finish()
         }
     }
 
@@ -146,5 +192,9 @@ class AddStoryActivity : AppCompatActivity() {
 
     private fun showToastString(message: String) {
         Toast.makeText(this@AddStoryActivity, message, Toast.LENGTH_SHORT).show()
+    }
+
+    companion object {
+        private const val LOCATION_PERMISSION_REQUEST_CODE = 1
     }
 }

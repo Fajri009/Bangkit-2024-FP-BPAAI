@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">StoryApp</string>
-    <string name="logo_app">Logo App</string>
+    <string name="logo_app" translatable="false">Logo App</string>
 
     <!-- Authentication -->
     <string name="login">Login</string>
@@ -15,7 +15,6 @@
     <string name="have_acc">Already have an account?</string>
     <string name="empty_form">Please fill in the form fields</string>
     <string name="try_login">Register Success! Please try to login to your account</string>
-    <string name="already_taken">SIGN UP ERROR : Email is already taken</string>
     <string name="invalid_form">Please fill in the form data according to the requirements</string>
 
     <!-- Home -->
@@ -32,8 +31,10 @@
     <string name="back">Back</string>
 
     <!-- Add Story -->
+    <string name="photo">Photo</string>
     <string name="camera">Camera</string>
     <string name="gallery">Galery</string>
+    <string name="add_share_loc">Share with your location</string>
     <string name="upload">Upload</string>
     <string name="empty_form_upload">Fill in the data first</string>
     <string name="add_story_success">Story successfully added</string>

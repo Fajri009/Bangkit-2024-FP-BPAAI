@@ -6,15 +6,14 @@
     <string name="login">Masuk</string>
     <string name="enter_email_password">Masukkan email and password kamu</string>
     <string name="invalid_email">Gunakan email format</string>
-    <string name="password">Password</string>
-    <string name="invalid_password">Password tidak boleh lebih dari 8 karakter</string>
+    <string name="password">Kata Sandi</string>
+    <string name="invalid_password">Kata sandi tidak boleh lebih dari 8 karakter</string>
     <string name="dont_have_acc">Belum punya akun?</string>
     <string name="sign_up">Daftar</string>
     <string name="name">Nama Lengkap</string>
     <string name="have_acc">Sudah mempunyai akun?</string>
     <string name="empty_form">Isi data form terlebih dahulu</string>
     <string name="try_login">Daftar akun berhasil! Silakan coba masuk ke akun Anda</string>
-    <string name="already_taken">DAFTAR ERROR : Email sudah terdaftar</string>
     <string name="invalid_form">Silakan isi data formulir sesuai ketentuan</string>
 
     <!-- Home -->
@@ -31,8 +30,10 @@
     <string name="back">Kembali</string>
 
     <!-- Add Story -->
+    <string name="photo">Foto</string>
     <string name="camera">Kamera</string>
     <string name="gallery">Galeri</string>
+    <string name="add_share_loc">Bagikan dengan lokasi Anda</string>
     <string name="upload">Unggah</string>
     <string name="empty_form_upload">Isi datanya terlebih dahulu</string>
     <string name="add_story_success">Cerita berhasil ditambahkan</string>

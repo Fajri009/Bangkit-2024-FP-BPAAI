@@ -6,6 +6,6 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 
 class AddStoryViewModel(private val storyRepository: StoryRepository): ViewModel() {
-    fun addStory(token: String, uri: MultipartBody.Part, desc: RequestBody) =
-        storyRepository.addStories("Bearer $token", uri, desc)
+    fun addStory(token: String, uri: MultipartBody.Part, desc: RequestBody, lat: Double?, lon: Double?) =
+        storyRepository.addStories("Bearer $token", uri, desc, lat, lon)
 }

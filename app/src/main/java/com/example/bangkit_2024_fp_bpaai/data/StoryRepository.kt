@@ -83,13 +83,15 @@ class StoryRepository(
     fun addStories(
         token: String,
         uri: MultipartBody.Part,
-        desc: RequestBody
+        desc: RequestBody,
+        lat: Double?,
+        lon: Double?
     ): LiveData<Result<AddStoryResponse>> =
         liveData {
             emit(Result.Loading)
 
             try {
-                val response = apiService.addStories(token, uri, desc)
+                val response = apiService.addStories(token, uri, desc, lat, lon)
                 emit(Result.Success(response))
             } catch (e: Exception) {
                 Log.d("Add Stories", e.message.toString())
