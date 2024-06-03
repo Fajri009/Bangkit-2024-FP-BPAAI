@@ -1,0 +1,51 @@
+{
+  "error": false,
+  "message": "Stories fetched successfully",
+  "listStory": [
+    {
+      "id": "story-4F1TDNVGLFwrTXn2",
+      "name": "pj",
+      "description": "p",
+      "photoUrl": "https://story-api.dicoding.dev/images/stories/photos-1717406892621_03badbf7113251a9549c.jpg",
+      "createdAt": "2024-06-03T09:28:12.626Z",
+      "lat": null,
+      "lon": null
+    },
+    {
+      "id": "story-ZX4lFcYVvOhrFddR",
+      "name": "kiluea",
+      "description": "tes",
+      "photoUrl": "https://story-api.dicoding.dev/images/stories/photos-1717406787119_ed23f775b757b2b068d4.jpg",
+      "createdAt": "2024-06-03T09:26:27.124Z",
+      "lat": null,
+      "lon": null
+    },
+    {
+      "id": "story-fb99zBfy27lhUIoT",
+      "name": "tesNgab",
+      "description": "hhffhk",
+      "photoUrl": "https://story-api.dicoding.dev/images/stories/photos-1717406594783_86ab4fe9d86cf0611cf7.jpg",
+      "createdAt": "2024-06-03T09:23:14.786Z",
+      "lat": null,
+      "lon": null
+    },
+    {
+      "id": "story-pXAxuaO2sK1OcN9G",
+      "name": "ditesting569",
+      "description": "tes",
+      "photoUrl": "https://story-api.dicoding.dev/images/stories/photos-1717406386296_7514c8128cd2cbd76afd.jpg",
+      "createdAt": "2024-06-03T09:19:46.297Z",
+      "lat": null,
+      "lon": null
+    },
+    {
+      "id": "story-HI9Sxd0tDeKEdTUR",
+      "name": "rudi",
+      "description": "tes 2",
+      "photoUrl": "https://story-api.dicoding.dev/images/stories/photos-1717406335905_b693737de6d1dc290ef5.jpg",
+      "createdAt": "2024-06-03T09:18:55.907Z",
+      "lat": null,
+      "lon": null
+    }
+  ]
+}

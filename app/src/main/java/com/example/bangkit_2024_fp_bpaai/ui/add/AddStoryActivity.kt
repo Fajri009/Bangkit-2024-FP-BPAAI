@@ -155,7 +155,7 @@ class AddStoryActivity : AppCompatActivity() {
                     requestImageFile
                 )
 
-                viewModel.addStory(userModel.token!!, multipartBody, requestBody, lat, lon)
+                viewModel.addStory("Bearer ${userModel.token!!}", multipartBody, requestBody, lat, lon)
                     .observe(this) { result ->
                         if (result != null) {
                             when (result) {

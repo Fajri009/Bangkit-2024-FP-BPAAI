@@ -5,6 +5,7 @@ import android.net.Uri
 import android.os.*
 import android.provider.MediaStore
 import androidx.core.content.FileProvider
+import androidx.test.espresso.idling.CountingIdlingResource
 import com.example.bangkit_2024_fp_bpaai.BuildConfig
 import java.io.*
 import java.text.SimpleDateFormat
@@ -67,4 +68,30 @@ fun uriToFile(imageUri: Uri, context: Context): File {
 fun createCustomTempFile(context: Context): File {
     val filesDir = context.externalCacheDir
     return File.createTempFile(timeStamp, ".jpg", filesDir)
+}
+
+object EspressoIdlingResource {
+    private const val RESOURCE = "GLOBAL"
+
+    @JvmField
+    val countingIdlingResource = CountingIdlingResource(RESOURCE)
+
+    fun increment() {
+        countingIdlingResource.increment()
+    }
+
+    fun decrement() {
+        if (!countingIdlingResource.isIdleNow) {
+            countingIdlingResource.decrement()
+        }
+    }
+}
+
+inline fun <T> wrapEspressoIdlingResource(function: () -> T): T {
+    EspressoIdlingResource.increment()
+    return try {
+        function()
+    } finally {
+        EspressoIdlingResource.decrement()
+    }
 }
