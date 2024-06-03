@@ -31,7 +31,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var userModel: User
     private lateinit var userPreferences: UserPreferences
 
-    private val factory: ViewModelFactory = ViewModelFactory.getInstance()
+    private val factory: ViewModelFactory = ViewModelFactory.getInstance(this)
     private val viewModel: MapsViewModel by viewModels {
         factory
     }

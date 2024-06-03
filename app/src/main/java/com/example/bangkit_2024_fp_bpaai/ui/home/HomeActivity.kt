@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.provider.Settings
 import android.view.View
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -12,7 +11,6 @@ import com.example.bangkit_2024_fp_bpaai.R
 import com.example.bangkit_2024_fp_bpaai.adapter.StoryAdapter
 import com.example.bangkit_2024_fp_bpaai.data.local.preference.User
 import com.example.bangkit_2024_fp_bpaai.data.local.preference.UserPreferences
-import com.example.bangkit_2024_fp_bpaai.data.remote.Result
 import com.example.bangkit_2024_fp_bpaai.data.remote.response.ListStoryItem
 import com.example.bangkit_2024_fp_bpaai.databinding.ActivityHomeBinding
 import com.example.bangkit_2024_fp_bpaai.ui.ViewModelFactory
@@ -23,9 +21,8 @@ import com.example.bangkit_2024_fp_bpaai.ui.maps.MapsActivity
 
 class HomeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityHomeBinding
-    private val factory: ViewModelFactory = ViewModelFactory.getInstance()
-    private val viewModel: HomeViewModel by viewModels {
-        factory
+    private val viewModel by viewModels<HomeViewModel> {
+        ViewModelFactory.getInstance(this)
     }
 
     private lateinit var userModel: User
@@ -50,12 +47,6 @@ class HomeActivity : AppCompatActivity() {
         getStoryData(userModel)
     }
 
-    private fun setStory(listStory: List<ListStoryItem>){
-        val adapter = StoryAdapter()
-
-        binding.rvStory.adapter = adapter
-    }
-
     override fun onBackPressed() {
         super.onBackPressed()
         finishAffinity()
@@ -74,23 +65,8 @@ class HomeActivity : AppCompatActivity() {
 
         val adapter = StoryAdapter()
         viewModel.getStory(userModel.token!!).observe(this) { result ->
-            if (result != null) {
-                when (result) {
-                    is Result.Loading -> {
-                        binding.progressBar.visibility = View.VISIBLE
-                    }
-                    is Result.Success -> {
-                        binding.progressBar.visibility = View.GONE
-                        val storiesData = result.data.listStory
-                        adapter.submitList(storiesData)
-                    }
-                    is Result.Error -> {
-                        binding.progressBar.visibility = View.GONE
-
-                        showToast(result.error)
-                    }
-                }
-            }
+            binding.progressBar.visibility = View.GONE
+            adapter.submitData(lifecycle, result)
         }
         binding.rvStory.adapter = adapter
 
@@ -140,9 +116,5 @@ class HomeActivity : AppCompatActivity() {
         moveWithParcelableIntent.putExtra(DetailStoryActivity.EXTRA_STORY_CREATED_AT, data.createdAt)
         moveWithParcelableIntent.putExtra(DetailStoryActivity.EXTRA_STORY_DESC, data.description)
         startActivity(moveWithParcelableIntent)
-    }
-
-    private fun showToast(message: String?) {
-        Toast.makeText(this@HomeActivity, message, Toast.LENGTH_SHORT).show()
     }
 }

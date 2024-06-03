@@ -20,12 +20,11 @@ import com.example.bangkit_2024_fp_bpaai.utils.isValidEmail
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
-    private var userModel: User = User()
+    private lateinit var userModel: User
     private lateinit var userPreference: UserPreferences
 
-    private val factory: ViewModelFactory = ViewModelFactory.getInstance()
-    private val viewModel: LoginViewModel by viewModels {
-        factory
+    private val viewModel by viewModels<LoginViewModel> {
+        ViewModelFactory.getInstance(this)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,10 +33,19 @@ class LoginActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         userPreference = UserPreferences(this)
+        userModel = User()
 
         playAnimation()
-        signUp()
-        login()
+
+        binding.apply {
+            tvSignUp.setOnClickListener {
+                val intent = Intent(this@LoginActivity, RegisterActivity::class.java)
+                startActivity(intent)
+            }
+            btnLogin.setOnClickListener {
+                login()
+            }
+        }
     }
 
     override fun onBackPressed() {
@@ -76,51 +84,45 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    private fun signUp() {
-        binding.tvSignUp.setOnClickListener {
-            val intent = Intent(this@LoginActivity, RegisterActivity::class.java)
-            startActivity(intent)
-        }
-    }
-
     private fun login() {
-        binding.btnLogin.setOnClickListener {
-            val edLoginEmail = binding.edLoginEmail.text
-            val edLoginPassword = binding.edLoginPassword.text
+        val edLoginEmail = binding.edLoginEmail.text
+        val edLoginPassword = binding.edLoginPassword.text
 
-            if (edLoginEmail!!.isEmpty() || edLoginPassword!!.isEmpty()) {
-                showToast(R.string.empty_form)
-            } else if (!isValidEmail(edLoginEmail.toString()) || edLoginPassword.length < 8) {
-                showToast(R.string.invalid_form)
-            } else {
-                viewModel.login(
-                    edLoginEmail.toString(),
-                    edLoginPassword.toString()
-                ).observe(this) { result ->
-                    if (result != null) {
-                        when (result) {
-                            is Result.Loading -> {
-                                binding.progressBar.visibility = View.VISIBLE
-                            }
-                            is Result.Success -> {
-                                binding.progressBar.visibility = View.GONE
-                                val response = result.data
-                                if (response.error == true) {
-                                    showToastString(response.message)
-                                } else {
-                                    val loginResult = response.loginResult
-                                    userModel.token = loginResult?.token
-                                    userPreference.setUser(userModel)
-                                    val intent = Intent(this@LoginActivity, HomeActivity::class.java)
-                                    startActivity(intent)
-                                    finish()
-                                }
-                            }
-                            is Result.Error -> {
-                                binding.progressBar.visibility = View.GONE
+        if (edLoginEmail!!.isEmpty() || edLoginPassword!!.isEmpty()) {
+            showToast(R.string.empty_form)
+        } else if (!isValidEmail(edLoginEmail.toString()) || edLoginPassword.length < 8) {
+            showToast(R.string.invalid_form)
+        } else {
+            viewModel.login(
+                edLoginEmail.toString(),
+                edLoginPassword.toString()
+            ).observe(this) { result ->
+                if (result != null) {
+                    when (result) {
+                        is Result.Loading -> {
+                            binding.progressBar.visibility = View.VISIBLE
+                        }
 
-                                showToastString(result.error)
+                        is Result.Success -> {
+                            binding.progressBar.visibility = View.GONE
+                            val response = result.data
+                            if (response.error == true) {
+                                showToastString(response.message)
+                            } else {
+                                val loginResult = response.loginResult
+                                userModel.token = loginResult?.token
+                                userPreference.setUser(userModel)
+                                val intent =
+                                    Intent(this@LoginActivity, HomeActivity::class.java)
+                                startActivity(intent)
+                                finish()
                             }
+                        }
+
+                        is Result.Error -> {
+                            binding.progressBar.visibility = View.GONE
+
+                            showToastString(result.error)
                         }
                     }
                 }

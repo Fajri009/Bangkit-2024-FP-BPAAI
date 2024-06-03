@@ -1,16 +1,12 @@
 package com.example.bangkit_2024_fp_bpaai.utils
 
 import android.content.*
-import android.graphics.*
 import android.net.Uri
 import android.os.*
 import android.provider.MediaStore
-import android.util.Log
 import androidx.core.content.FileProvider
 import com.example.bangkit_2024_fp_bpaai.BuildConfig
-import com.example.bangkit_2024_fp_bpaai.data.remote.response.ListStoryItem
 import java.io.*
-import java.net.URL
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -71,26 +67,4 @@ fun uriToFile(imageUri: Uri, context: Context): File {
 fun createCustomTempFile(context: Context): File {
     val filesDir = context.externalCacheDir
     return File.createTempFile(timeStamp, ".jpg", filesDir)
-}
-
-fun convertListStoryToBitmap(context: Context, listStory: List<ListStoryItem?>?): List<Bitmap> {
-    val bitmaps = mutableListOf<Bitmap>()
-    for (storyItem in listStory!!) {
-        val photoUrl = storyItem!!.photoUrl
-        if (photoUrl != null) {
-            try {
-                val url = URL(photoUrl)
-                val connection = url.openConnection()
-                connection.doInput = true
-                connection.connect()
-                val inputStream = connection.getInputStream()
-                val bitmap = BitmapFactory.decodeStream(inputStream)
-                bitmaps.add(bitmap)
-                inputStream.close()
-            } catch (e: IOException) {
-                Log.e("Utils", "Error downloading bitmap from URL: $photoUrl", e)
-            }
-        }
-    }
-    return bitmaps
 }

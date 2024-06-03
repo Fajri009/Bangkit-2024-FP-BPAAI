@@ -1,20 +1,21 @@
 package com.example.bangkit_2024_fp_bpaai.adapter
 
 import android.view.*
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.*
 import com.bumptech.glide.Glide
 import com.example.bangkit_2024_fp_bpaai.data.remote.response.ListStoryItem
 import com.example.bangkit_2024_fp_bpaai.databinding.ItemListStoryBinding
 import com.example.bangkit_2024_fp_bpaai.utils.withDateFormat
 
-class StoryAdapter: ListAdapter<ListStoryItem, StoryAdapter.ViewHolder>(DIFF_CALLBACK) {
+class StoryAdapter: PagingDataAdapter<ListStoryItem, StoryAdapter.ViewHolder>(DIFF_CALLBACK) {
     private lateinit var onItemClickCallBack: OnItemClickCallBack
 
     fun setOnItemClickCallBack(onItemClickCallBack: OnItemClickCallBack) {
         this.onItemClickCallBack = onItemClickCallBack
     }
 
-    class ViewHolder(val binding: ItemListStoryBinding): RecyclerView.ViewHolder(binding.root) {
+    class ViewHolder(private val binding: ItemListStoryBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(items: ListStoryItem) {
             Glide.with(itemView.context)
                 .load(items.photoUrl)
@@ -32,10 +33,11 @@ class StoryAdapter: ListAdapter<ListStoryItem, StoryAdapter.ViewHolder>(DIFF_CAL
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val items = getItem(position)
-        holder.bind(items)
-
-        holder.itemView.setOnClickListener {
-            onItemClickCallBack.onItemClicked(items)
+        if (items != null) {
+            holder.bind(items)
+            holder.itemView.setOnClickListener {
+                onItemClickCallBack.onItemClicked(items)
+            }
         }
     }
 

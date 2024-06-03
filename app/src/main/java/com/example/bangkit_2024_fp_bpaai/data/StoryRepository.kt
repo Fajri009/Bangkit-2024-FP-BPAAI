@@ -1,21 +1,20 @@
 package com.example.bangkit_2024_fp_bpaai.data
 
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.liveData
+import androidx.lifecycle.*
+import androidx.paging.ExperimentalPagingApi
+import androidx.paging.*
+import com.example.bangkit_2024_fp_bpaai.data.local.room.StoryDatabase
+import com.example.bangkit_2024_fp_bpaai.data.local.room.remotemediator.StoryRemoteMediator
 import com.example.bangkit_2024_fp_bpaai.data.remote.Result
-import com.example.bangkit_2024_fp_bpaai.data.remote.response.AddStoryResponse
-import com.example.bangkit_2024_fp_bpaai.data.remote.response.ErrorResponse
-import com.example.bangkit_2024_fp_bpaai.data.remote.response.LoginResponse
-import com.example.bangkit_2024_fp_bpaai.data.remote.response.RegisterResponse
-import com.example.bangkit_2024_fp_bpaai.data.remote.response.Story
+import com.example.bangkit_2024_fp_bpaai.data.remote.response.*
 import com.example.bangkit_2024_fp_bpaai.data.remote.retrofit.ApiService
 import com.google.gson.Gson
-import okhttp3.MultipartBody
-import okhttp3.RequestBody
+import okhttp3.*
 import retrofit2.HttpException
 
 class StoryRepository(
+    private val storyDatabase: StoryDatabase,
     private val apiService: ApiService
 ) {
     fun register(
@@ -54,18 +53,18 @@ class StoryRepository(
             }
         }
 
-    fun getStories(token: String): LiveData<Result<Story>> =
-        liveData {
-            emit(Result.Loading)
-
-            try {
-                val response = apiService.getStories(token)
-                emit(Result.Success(response))
-            } catch (e: Exception) {
-                Log.d("Get Stories", e.message.toString())
-                emit(Result.Error(e.message.toString()))
+    fun getStories(token: String): LiveData<PagingData<ListStoryItem>> {
+        @OptIn(ExperimentalPagingApi::class)
+        return Pager(
+            config = PagingConfig(
+                pageSize = 5
+            ),
+            remoteMediator = StoryRemoteMediator(storyDatabase, apiService, token),
+            pagingSourceFactory = {
+                storyDatabase.storyDao().getAllStory()
             }
-        }
+        ).liveData
+    }
 
     fun getStoriesWithLocation(token: String, location: Int): LiveData<Result<Story>> =
         liveData {

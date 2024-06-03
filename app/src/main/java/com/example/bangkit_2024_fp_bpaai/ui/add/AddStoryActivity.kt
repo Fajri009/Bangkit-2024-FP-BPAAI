@@ -36,9 +36,8 @@ class AddStoryActivity : AppCompatActivity() {
     private var lat: Double? = null
     private var lon: Double? = null
 
-    private val factory: ViewModelFactory = ViewModelFactory.getInstance()
-    private val viewModel: AddStoryViewModel by viewModels {
-        factory
+    private val viewModel by viewModels<AddStoryViewModel> {
+        ViewModelFactory.getInstance(this)
     }
 
     private lateinit var userModel: User
