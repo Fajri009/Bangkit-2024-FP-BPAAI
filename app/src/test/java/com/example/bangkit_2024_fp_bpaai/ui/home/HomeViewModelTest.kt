@@ -18,11 +18,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
-import org.mockito.Mockito
+import org.mockito.Mockito.`when`
 import org.mockito.junit.MockitoJUnitRunner
 
 @ExperimentalCoroutinesApi
@@ -34,8 +35,13 @@ class HomeViewModelTest {
     @get:Rule
     val mainDispatcherRules = MainDispatcherRule()
 
-    @Mock
-    private lateinit var storyRepository: StoryRepository
+    private lateinit var homeViewModel: HomeViewModel
+    @Mock private lateinit var storyRepository: StoryRepository
+
+    @Before
+    fun setUp() {
+        homeViewModel = HomeViewModel(storyRepository)
+    }
 
     @Test
     fun `when Get Story Should Not Null and Return Data`() = runTest {
@@ -43,9 +49,9 @@ class HomeViewModelTest {
         val data: PagingData<ListStoryItem> = StoryPagingSource.snapShot(dummyStory)
         val expectedStory = MutableLiveData<PagingData<ListStoryItem>>()
         expectedStory.value = data
-        Mockito.`when`(storyRepository.getStories(TOKEN)).thenReturn(expectedStory)
+        `when`(storyRepository.getStories(TOKEN)).thenReturn(expectedStory)
 
-        val actualStory: PagingData<ListStoryItem> = storyRepository.getStories(TOKEN).getOrAwaitValue()
+        val actualStory: PagingData<ListStoryItem> = homeViewModel.getStory(TOKEN).getOrAwaitValue()
 
         val differ = AsyncPagingDataDiffer(
             diffCallback = StoryAdapter.DIFF_CALLBACK,
@@ -64,9 +70,9 @@ class HomeViewModelTest {
         val data: PagingData<ListStoryItem> = PagingData.from(emptyList())
         val expectedStory = MutableLiveData<PagingData<ListStoryItem>>()
         expectedStory.value = data
-        Mockito.`when`(storyRepository.getStories(TOKEN)).thenReturn(expectedStory)
+        `when`(homeViewModel.getStory(TOKEN)).thenReturn(expectedStory)
 
-        val actualStory: PagingData<ListStoryItem> = storyRepository.getStories(TOKEN).getOrAwaitValue()
+        val actualStory: PagingData<ListStoryItem> = homeViewModel.getStory(TOKEN).getOrAwaitValue()
 
         val differ = AsyncPagingDataDiffer(
             diffCallback = StoryAdapter.DIFF_CALLBACK,
@@ -79,7 +85,7 @@ class HomeViewModelTest {
     }
 
     companion object {
-        private const val TOKEN = "Bearer token"
+        private const val TOKEN = "token"
     }
 }
 

@@ -64,7 +64,7 @@ class HomeActivity : AppCompatActivity() {
         binding.rvStory.layoutManager = layoutInflater
 
         val adapter = StoryAdapter()
-        viewModel.getStory(userModel.token!!).observe(this) { result ->
+        viewModel.getStory("Bearer ${userModel.token}").observe(this) { result ->
             binding.progressBar.visibility = View.GONE
             adapter.submitData(lifecycle, result)
         }
